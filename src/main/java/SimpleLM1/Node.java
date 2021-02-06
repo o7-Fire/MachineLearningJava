@@ -14,6 +14,8 @@ public class Node extends RandomFramework implements Serializable {
 		super(seed);
 	}
 	
+	//here the magic happened
+	//it is work ? if not throw away else keep it
 	public ArrayList<Float> get(ArrayList<Float> ar, int max) {
 		ArrayList<Float> arr = new ArrayList<>(max);
 		long s = seed;

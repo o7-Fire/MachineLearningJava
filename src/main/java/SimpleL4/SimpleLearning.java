@@ -19,7 +19,7 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 
 import java.io.File;
-
+//somehow work, no idea how this work
 public class SimpleLearning {
 	
 	static int useJacketAtCentigrade = 10;

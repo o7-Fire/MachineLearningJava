@@ -1,6 +1,7 @@
 package SimpleLM1;
 
 import Atom.File.SerializeData;
+import Atom.Time.Timer;
 import Atom.Utility.Random;
 import Atom.Utility.Utility;
 
@@ -8,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 public class SimpleLearning {
 	static int useJacketAtCentigrade = 15, useJacketAtHumidity = 40;
@@ -95,27 +97,35 @@ public class SimpleLearning {
 		float preference = Random.getFloat();
 		boolean output = get(centigrade, humidity, preference);
 		boolean should = shouldUseJacket(new ArrayList<>(Arrays.asList((float) centigrade, (float) humidity, preference)));
-		System.out.println("Centigrade: " + centigrade + "\nHumidity:" + humidity + "\nPreference:" + preference);
-		System.out.println("Should use: " + should);
-		System.out.println("Output: " + output);
+		if (Settings.debug) {
+			System.out.println("Centigrade: " + centigrade + "\nHumidity:" + humidity + "\nPreference:" + preference);
+			System.out.println("Should use: " + should);
+			System.out.println("Output: " + output);
+		}
 		return should == output;
 	}
 	
 	public boolean testRigid() {
-		for (int i = 0; i < 20; i++) {
-			System.out.println("\nIteration:" + i);
+		for (int i = 0; i < 40; i++) {
+			if (Settings.debug) System.out.println("\nIteration:" + i);
 			if (!testModel()) return false;
 		}
 		return true;
 	}
 	
 	public void trainModel() {
+		boolean d = Settings.debug;
+		Settings.debug = false;
 		int iteration = 0;
+		Timer timer = new Timer(TimeUnit.MICROSECONDS, 1000);
 		while (!testRigid()) {
 			model.update();
 			iteration++;
-			System.out.println("\n\nBatch: " + iteration);
+			Settings.debug = timer.get();
+			if (Settings.debug) System.out.println("\n\nBatch: " + iteration);
+			
 		}
+		Settings.debug = d;
 		System.out.println("\n" + model.toString());
 	}
 }

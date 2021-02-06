@@ -24,7 +24,7 @@ dependencies {
      */
 
 
-    implementation "com.github.o7-Fire.Atomic-Library:Atomic:bdc4aa2e1b"
+    implementation "com.github.o7-Fire.Atomic-Library:Atomic:049cee0055"
 }
 jar{
     manifest {

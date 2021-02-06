@@ -32,7 +32,7 @@ public class Layer extends RandomFramework implements Serializable {
 		return this;
 	}
 	
-	public ArrayList<Float> get(ArrayList<Float> f, int output) {
+	public ArrayList<Float> get(ArrayList<Float> f, int output) {//todo dont do output
 		ArrayList<Float> sumFloat = new ArrayList<>();
 		for (int i = 0; i < output; i++) {
 			sumFloat.add(0f);
@@ -40,7 +40,7 @@ public class Layer extends RandomFramework implements Serializable {
 		for (Node n : nodes) {
 			int i = 0;
 			for (float fe : n.get(f, output)) {
-				sumFloat.set(i, sumFloat.get(i) + fe);
+				sumFloat.set(i, sumFloat.get(i) % fe);
 				i++;
 			}
 		}
@@ -62,7 +62,7 @@ public class Layer extends RandomFramework implements Serializable {
 	
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(" ");
 		int y = 0;
 		for (Node n : nodes) {
 			sb.append("Node: ").append(y).append("\n ").append(n.toString()).append("\n\n ");
