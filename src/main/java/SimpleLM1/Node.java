@@ -29,5 +29,8 @@ public class Node extends RandomFramework implements Serializable {
 		return arr;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Seed: " + seed + ", " + super.toString();
+	}
 }

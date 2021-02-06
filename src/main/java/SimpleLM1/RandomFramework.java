@@ -3,9 +3,10 @@ package SimpleLM1;
 import java.io.Serializable;
 import java.util.Random;
 
-public abstract class RandomFramework extends Random implements Serializable {
+public abstract class RandomFramework implements Serializable {
 	
 	protected long seed;
+	protected Random random = new Random();
 	
 	public RandomFramework() {
 		this(System.nanoTime());
@@ -13,15 +14,17 @@ public abstract class RandomFramework extends Random implements Serializable {
 	
 	public RandomFramework(long seed) {
 		this.seed = seed;
-		check();
 	}
 	
-	public void check() {
+	public RandomFramework check() {
+		if (random == null) random = new Random();
 		setSeed();
+		return this;
 	}
 	
-	public void mixSeed(float s) {
+	public RandomFramework mixSeed(float s) {
 		setSeed((long) (nextBoolean() ? seed * s : seed / s));
+		return this;
 	}
 	
 	public long getSeed() {
@@ -29,15 +32,29 @@ public abstract class RandomFramework extends Random implements Serializable {
 	}
 	
 	public void setSeed(long seed) {
-		super.setSeed(seed);
 		this.seed = seed;
+		random.setSeed(seed);
 	}
 	
-	public void randomSeed() {
+	public RandomFramework randomSeed() {
 		setSeed(nextLong());
+		return this;
 	}
 	
-	public void setSeed() {
+	public boolean nextBoolean() {
+		return new Random(seed).nextBoolean();
+	}
+	
+	public float nextFloat() {
+		return new Random(seed).nextFloat();
+	}
+	
+	public long nextLong() {
+		return new Random(seed).nextLong();
+	}
+	
+	public RandomFramework setSeed() {
 		setSeed(seed);
+		return this;
 	}
 }

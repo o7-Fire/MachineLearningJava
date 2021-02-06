@@ -19,15 +19,17 @@ public class Layer extends RandomFramework implements Serializable {
 		this(nodesSize, System.currentTimeMillis());
 	}
 	
-	public void check() {
+	public Layer check() {
 		super.check();
 		for (Node n : nodes)
 			n.check();
+		return this;
 	}
 	
-	public void update() {
+	public Layer update() {
 		for (Node n : nodes)
-			n.setSeed(nextLong());
+			n.setSeed(random.nextLong());
+		return this;
 	}
 	
 	public ArrayList<Float> get(ArrayList<Float> f, int output) {
@@ -45,16 +47,28 @@ public class Layer extends RandomFramework implements Serializable {
 		return sumFloat;
 	}
 	
-	public void regenerate() {
-		check();
+	public Layer regenerate() {
 		this.nodes = new ArrayList<>(nodesSize);
+		check();
 		for (int i = 0; i < nodesSize; i++) {
 			this.nodes.add(new Node(nextLong()));
 		}
+		return this;
 	}
 	
 	public ArrayList<Node> getNodes() {
 		return nodes;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int y = 0;
+		for (Node n : nodes) {
+			sb.append("Node: ").append(y).append("\n ").append(n.toString()).append("\n\n ");
+			y++;
+		}
+		return sb.toString();
 	}
 	
 	public int getNodesSize() {

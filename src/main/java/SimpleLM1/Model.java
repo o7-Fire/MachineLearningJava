@@ -14,6 +14,36 @@ public class Model extends RandomFramework implements Serializable {
 		super(seed);
 	}
 	
+	public Model update() {
+		for (Layer l : layers) {
+			l.setSeed(random.nextLong());
+			l.update();
+		}
+		return this;
+	}
+	
+	@Override
+	public Model check() {
+		super.check();
+		for (Layer l : layers)
+			l.check();
+		return this;
+	}
+	
+	public ArrayList<Float> get(ArrayList<Float> f) {
+		Layer layer = null;
+		if (layers.isEmpty()) return f;
+		for (Layer l : layers) {
+			if (layer == null) {
+				layer = l;
+				continue;
+			}
+			f = layer.get(f, l.getNodesSize());
+			layer = l;
+		}
+		return layer.get(f, layer.getNodesSize());
+	}
+	
 	public Layer getInputLayer() {
 		return layers.get(0);
 	}
@@ -22,11 +52,32 @@ public class Model extends RandomFramework implements Serializable {
 		return layers.get(layers.size() - 1);
 	}
 	
-	public void clearLayer() {
-		layers.clear();
+	public ArrayList<Layer> getLayers() {
+		return layers;
 	}
 	
-	public void addLayer(Layer l) {
+	public Model clearLayer() {
+		layers.clear();
+		return this;
+	}
+	
+	public Model addLayer(int nodeSize) {
+		return addLayer(new Layer(nodeSize, nextLong()));
+	}
+	
+	public Model addLayer(Layer l) {
 		layers.add(l);
+		return this;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		int x = 0;
+		for (Layer l : layers) {
+			sb.append("\nLayer: ").append(x).append("\n ").append(l.toString());
+			x++;
+		}
+		return sb.toString();
 	}
 }
