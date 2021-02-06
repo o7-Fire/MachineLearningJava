@@ -1,4 +1,4 @@
-/*
+package SimpleL4;/*
  * Copyright 2021 Itzbenz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,14 +19,11 @@ import Atom.Utility.Random;
 import Atom.Utility.Utility;
 
 import java.io.File;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SimpleLearning {
 	
 	static int useJacketAtCentigrade = 10;
-	static File f = new File("SimpleLearning.mdl");
+	static File f = new File("SimpleL4.SimpleLearning.mdl");
 	static Model n = new Model(1, 1);
 	
 	public static void main(String[] args) throws Throwable {
@@ -115,88 +112,4 @@ public class SimpleLearning {
 		return true;
 	}
 	
-	public static class Model implements Serializable {
-		ArrayList<ArrayList<Node>> nodes = new ArrayList<>();
-		Node end = new Node(Random.getLong());
-		
-		public Model(int x, int y) {
-			for (int i = 0; i < x; i++) {
-				ArrayList<Node> node = new ArrayList<>();
-				for (int j = 0; j < y; j++) {
-					node.add(new Node(Random.getLong()));
-				}
-				nodes.add(node);
-			}
-		}
-		
-		public void update() {
-			for (ArrayList<Node> n : nodes) {
-				for (Node node : n)
-					node.updateScrew(Random.getLong());
-			}
-			end.updateScrew(Random.getLong());
-		}
-		
-		public boolean get(int data) {
-			float datashit = data;
-			for (List<Node> n : nodes) {
-				for (Node node : n)
-					datashit = node.get(datashit);
-			}
-			System.out.println("[Model] Input: " + data + ", Output: " + datashit);
-			return datashit < 0.5f;
-		}
-		
-		@Override
-		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			int x = 0, y = 0;
-			for (ArrayList<Node> n : nodes) {
-				x++;
-				for (Node node : n) {
-					y++;
-					sb.append("x:").append(x).append(", y:").append(y).append("  ").append(node.toString()).append("\n");
-				}
-			}
-			return sb.toString();
-		}
-	}
-	
-	public static class Node implements Serializable {
-		long s;
-		transient Random random = new Random();
-		
-		public Node(long screw) {
-			updateScrew(screw);
-			
-		}
-		
-		public void check() {
-			if (random == null) {
-				random = new Random();
-				applyScrew();
-			}
-		}
-		
-		public void applyScrew() {
-			updateScrew(s);
-		}
-		
-		public void updateScrew(long screw) {
-			if (random == null) random = new Random();
-			s = screw;
-			random.setSeed(screw);
-		}
-		
-		public float get(float data) {
-			check();
-			if (random.nextBoolean()) return Math.min(random.nextFloat(), data * random.nextFloat());
-			else return Math.max(random.nextFloat(), data * random.nextFloat());
-		}
-		
-		@Override
-		public String toString() {
-			return super.toString() + ": " + s;
-		}
-	}
 }
