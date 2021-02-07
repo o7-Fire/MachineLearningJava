@@ -98,6 +98,7 @@ public class SimpleLearning {
 		boolean output = get(centigrade, humidity, preference);
 		boolean should = shouldUseJacket(new ArrayList<>(Arrays.asList((float) centigrade, (float) humidity, preference)));
 		if (Settings.debug) {
+			System.out.println();
 			System.out.println("Centigrade: " + centigrade + "\nHumidity:" + humidity + "\nPreference:" + preference);
 			System.out.println("Should use: " + should);
 			System.out.println("Output: " + output);
@@ -110,6 +111,7 @@ public class SimpleLearning {
 			if (Settings.debug) System.out.println("\nIteration:" + i);
 			if (!testModel()) return false;
 		}
+		System.out.println("Test passed");
 		return true;
 	}
 	
