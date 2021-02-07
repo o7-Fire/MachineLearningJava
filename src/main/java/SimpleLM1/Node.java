@@ -21,11 +21,11 @@ public class Node extends RandomFramework implements Serializable {
 		long s = seed;
 		for (int i = 0; i < max; i++) {
 			float f = i;
-			try {
-				f *= ar.get(i);
-			}catch (IndexOutOfBoundsException ignored) {}
-			mixSeed(f);
-			arr.add(nextFloat());
+			for (float ff : ar)
+				try { f += ff; }catch (IndexOutOfBoundsException ignored) {}
+			if (nextBoolean()) f = Math.min(nextFloat(), f * nextFloat());
+			else f = Math.max(nextFloat(), f * nextFloat());
+			arr.add(f);
 			setSeed(s);
 		}
 		return arr;

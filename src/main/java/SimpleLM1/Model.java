@@ -30,11 +30,11 @@ public class Model extends RandomFramework implements Serializable {
 		return this;
 	}
 	
-	public ArrayList<Float> get(ArrayList<Float> f) {
-		if (Settings.debug) System.out.println("Layer-Output: 0\n " + f.toString());
+	public ArrayList<ArrayList<Float>> get(ArrayList<ArrayList<Float>> f) {
+		if (Settings.debug) System.out.println("Input:\n " + f.toString());
 		Layer layer = null;
 		if (layers.isEmpty()) return f;
-		int x = 1;
+		int x = 0;
 		for (Layer l : layers) {
 			if (layer == null) {
 				layer = l;
@@ -45,7 +45,9 @@ public class Model extends RandomFramework implements Serializable {
 			if (Settings.debug) System.out.println("Layer-Output: " + x + "\n " + f.toString());
 			x++;
 		}
-		return layer.get(f, layer.getNodesSize());
+		f = layer.get(f, layer.getNodesSize());
+		if (Settings.debug) System.out.println("Layer-Output: " + x + "\n " + f.toString());
+		return f;
 	}
 	
 	public Layer getInputLayer() {

@@ -49,12 +49,12 @@ public class SimpleLearning {
 				}catch (Throwable ignored) {}
 				return;
 			}
-			if (s.equalsIgnoreCase("test")) {
-				simpleLearning.testModel();
-			}
-			if (s.equalsIgnoreCase("train")) {
-				simpleLearning.trainModel();
-			}
+			if (s.equalsIgnoreCase("test")) simpleLearning.testModel();
+			
+			if (s.equalsIgnoreCase("train")) simpleLearning.trainModel();
+			
+			if (s.equalsIgnoreCase("testRigid")) simpleLearning.testRigid();
+			
 			if (s.equalsIgnoreCase("print")) System.out.println(simpleLearning.model.toString());
 		});
 	}
@@ -83,12 +83,12 @@ public class SimpleLearning {
 	}
 	
 	public boolean get(float centigrade, float humidity, float preference) {
-		ArrayList<Float> data = new ArrayList<>();
+		ArrayList<ArrayList<Float>> data = new ArrayList<>();
 		
-		data.add(centigrade);
-		data.add(humidity);
-		data.add(preference);
-		ArrayList<Float> out = model.get(data);
+		data.add(new ArrayList<>(Arrays.asList(centigrade / 200.f)));
+		data.add(new ArrayList<>(Arrays.asList(humidity / 100.f)));
+		data.add(new ArrayList<>(Arrays.asList(preference)));
+		ArrayList<Float> out = model.get(data).get(0);
 		return out.get(0) > 0.5;
 	}
 	

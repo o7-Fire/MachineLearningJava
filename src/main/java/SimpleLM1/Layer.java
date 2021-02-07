@@ -32,17 +32,20 @@ public class Layer extends RandomFramework implements Serializable {
 		return this;
 	}
 	
-	public ArrayList<Float> get(ArrayList<Float> f, int output) {//todo dont do output
-		ArrayList<Float> sumFloat = new ArrayList<>();
+	public ArrayList<ArrayList<Float>> get(ArrayList<ArrayList<Float>> ff, int output) {//todo dont do output
+		ArrayList<ArrayList<Float>> sumFloat = new ArrayList<>();
 		for (int i = 0; i < output; i++) {
-			sumFloat.add(0f);
+			sumFloat.add(new ArrayList<>());
 		}
+		int x = 0;
 		for (Node n : nodes) {
 			int i = 0;
+			ArrayList<Float> f = ff.get(x);
 			for (float fe : n.get(f, output)) {
-				sumFloat.set(i, sumFloat.get(i) % fe);
+				sumFloat.get(i).add(x, fe);
 				i++;
 			}
+			x++;
 		}
 		return sumFloat;
 	}
