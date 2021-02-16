@@ -34,6 +34,8 @@ public class Main {
 			nets = MultiLayerNetwork.load(model, true);
 			loadInterface(nets);
 			System.out.println("Loaded: " + model.getAbsolutePath());
+			nets.fit(getDataSet());
+			System.out.println("Score:" + nets.score());
 		}catch (Throwable ignored) {
 			nets = new MultiLayerNetwork(conf);
 			loadInterface(nets);
