@@ -73,13 +73,28 @@ public class SimpleLearning {
 		model.clearLayer().check().addLayer(3).addLayer(1).check();
 	}
 	
-	public boolean shouldUseJacket(ArrayList<Float> data) {
+	public static boolean shouldUseJacket(ArrayList<Float> data) {
 		if (data.size() != 3) throw new IllegalArgumentException("Data is corrupted");
 		boolean preferToUse = data.get(2) > 0.5f;
 		if (data.get(0) < useJacketAtCentigrade && preferToUse) return true;
 		if (data.get(1) < useJacketAtHumidity && preferToUse) return true;
 		if (data.get(0) < useJacketAtCentigrade && data.get(1) < useJacketAtHumidity) return true;
 		return false;
+	}
+	
+	public static boolean shouldUseJacket(float[] data) {
+		if (data.length != 3) throw new IllegalArgumentException("Data is corrupted");
+		boolean preferToUse = data[2] > 0.5f;
+		if (data[0] < useJacketAtCentigrade && preferToUse) return true;
+		if (data[1] < useJacketAtHumidity && preferToUse) return true;
+		if (data[0] < useJacketAtCentigrade && data[1] < useJacketAtHumidity) return true;
+		return false;
+	}
+	
+	public static float[] getRandomData() {
+		int centigrade = Random.getInt(-60, 40), humidity = Random.getInt(0, 100);
+		float preference = Random.getFloat();
+		return new float[]{(float) centigrade, (float) humidity, preference};
 	}
 	
 	public boolean get(float centigrade, float humidity, float preference) {
