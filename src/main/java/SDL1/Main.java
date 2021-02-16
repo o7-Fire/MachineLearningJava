@@ -24,11 +24,11 @@ import java.util.ArrayList;
 
 public class Main {
 	public static File model = new File("SDL1.zip");
-	public static double maxScore = 1.0;
+	public static double maxScore = 1.0, learningRate = 0.001;
 	
 	public static void main(String[] args) throws IOException {
 		org.apache.log4j.BasicConfigurator.configure();
-		MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder().updater(new Adam(0.001)).list().layer(new DenseLayer.Builder().nIn(3).nOut(2).build()).layer(new DenseLayer.Builder().nIn(2).nOut(2).activation(Activation.RELU).build()).layer(new OutputLayer.Builder().nIn(2).nOut(2).build()).build();
+		MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder().updater(new Adam(learningRate)).list().layer(new DenseLayer.Builder().nIn(3).nOut(2).build()).layer(new DenseLayer.Builder().nIn(2).nOut(2).activation(Activation.RELU).build()).layer(new OutputLayer.Builder().nIn(2).nOut(2).build()).build();
 		
 		MultiLayerNetwork nets;
 		try {
@@ -55,14 +55,20 @@ public class Main {
 		Utility.convertThreadToInputListener(">", s -> {
 			if (s.equalsIgnoreCase("test")) {
 				try {
-					NDArray d = randomData();
+					DataSet ds = getDataSet();
+					
+					
+					INDArray d = ds.getFeatures();
 					System.out.println("Temperature, Humidity, Prefer to use jacket (float)");
 					System.out.println(d.toStringFull());
 					INDArray output = net.activate(d, Layer.TrainingMode.TEST);
+					System.out.println("Output:");
 					System.out.println(output.toStringFull());
+					System.out.println("Desired Output:");
+					System.out.println(ds.getLabels().toStringFull());
 					System.out.println("Should Use jacket: " + (shouldUse(d) ? "Yes" : "No"));
 					System.out.println("NeuralNet Answer: " + (use(output) ? "Yes" : "No"));
-					
+					System.out.println("Score: " + net.score(ds));
 				}catch (Throwable t) {
 					t.printStackTrace();
 				}
@@ -106,13 +112,13 @@ public class Main {
 		return output.getFloat(0) > 0.5 && output.getFloat(1) < 0.5;
 	}
 	
-	public static boolean shouldUse(NDArray nd) {
+	public static boolean shouldUse(INDArray nd) {
 		return SimpleLearning.shouldUseJacket(nd.toFloatVector());
 	}
 	
 	public static void train(MultiLayerNetwork net) throws IOException {
-		for (int i = 0; i < 2; i++) {
-			while (net.score() < maxScore) {
+		for (int i = 0; i < 5; i++) {
+			while (net.score() < maxScore + learningRate) {
 				DataSet d = getDataSet();
 				net.fit(d);
 			}
