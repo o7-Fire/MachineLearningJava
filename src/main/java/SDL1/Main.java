@@ -20,6 +20,7 @@ import org.nd4j.linalg.learning.config.Adam;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 	public static File model = new File("SDL1.zip");
@@ -34,8 +35,9 @@ public class Main {
 			nets = MultiLayerNetwork.load(model, true);
 			loadInterface(nets);
 			System.out.println("Loaded: " + model.getAbsolutePath());
-			nets.fit(getDataSet());
-			System.out.println("Score:" + nets.score());
+			double d = getAverageScore(nets);
+			System.out.println("Score:" + d);
+			maxScore = Math.max(d, maxScore);
 		}catch (Throwable ignored) {
 			nets = new MultiLayerNetwork(conf);
 			loadInterface(nets);
@@ -65,7 +67,8 @@ public class Main {
 					t.printStackTrace();
 				}
 			}
-			if (s.equalsIgnoreCase("score")) System.out.println(net.score());
+			if (s.equalsIgnoreCase("max")) System.out.println(maxScore);
+			if (s.equalsIgnoreCase("score")) System.out.println(getAverageScore(net));
 			if (s.equalsIgnoreCase("train")) {
 				try {
 					train(net);
@@ -75,6 +78,14 @@ public class Main {
 			}
 		});
 		
+	}
+	
+	public static double getAverageScore(MultiLayerNetwork nets) {
+		ArrayList<Double> floats = new ArrayList<>();
+		for (int i = 0; i < 100; i++) {
+			floats.add(nets.score(getDataSet()));
+		}
+		return floats.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
 	}
 	
 	public static void loadInterface(MultiLayerNetwork net) {
@@ -107,7 +118,7 @@ public class Main {
 			}
 			maxScore = Math.max(maxScore, net.score());
 		}
-		net.save(model);
+		net.save(model, true);
 	}
 	
 	public static NDArray randomData() {
