@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class Main {
 	public static File model = new File("SDL1.zip");
-	public static double maxScore = 1.0, learningRate = 0.001;
+	public static double minScore = 0.5, learningRate = 0.001;
 	
 	public static void main(String[] args) throws IOException {
 		org.apache.log4j.BasicConfigurator.configure();
@@ -37,7 +37,7 @@ public class Main {
 			System.out.println("Loaded: " + model.getAbsolutePath());
 			double d = getAverageScore(nets);
 			System.out.println("Score:" + d);
-			maxScore = Math.max(d, maxScore);
+			minScore = Math.min(d, minScore);
 		}catch (Throwable ignored) {
 			nets = new MultiLayerNetwork(conf);
 			loadInterface(nets);
@@ -73,7 +73,7 @@ public class Main {
 					t.printStackTrace();
 				}
 			}
-			if (s.equalsIgnoreCase("max")) System.out.println(maxScore);
+			if (s.equalsIgnoreCase("min")) System.out.println(minScore);
 			if (s.equalsIgnoreCase("score")) System.out.println(getAverageScore(net));
 			if (s.equalsIgnoreCase("train")) {
 				try {
@@ -118,11 +118,11 @@ public class Main {
 	
 	public static void train(MultiLayerNetwork net) throws IOException {
 		for (int i = 0; i < 5; i++) {
-			while (net.score() < maxScore + learningRate) {
+			while (net.score() < minScore - learningRate) {
 				DataSet d = getDataSet();
 				net.fit(d);
 			}
-			maxScore = Math.max(maxScore, net.score());
+			minScore = Math.min(minScore, net.score());
 		}
 		net.save(model, true);
 	}
