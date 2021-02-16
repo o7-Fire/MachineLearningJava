@@ -3,7 +3,6 @@ package SDL1;
 import Atom.Utility.Utility;
 import SimpleLM1.SimpleLearning;
 import org.deeplearning4j.core.storage.StatsStorage;
-import org.deeplearning4j.nn.api.Layer;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
@@ -64,7 +63,7 @@ public class Main {
 					INDArray dOutput = ds.getLabels();
 					System.out.println("Temperature, Humidity, Prefer to use jacket (float)");
 					System.out.println(input.toStringFull());
-					INDArray output = net.output(input, Layer.TrainingMode.TEST);
+					INDArray output = net.output(input);
 					System.out.println("Output:");
 					System.out.println(output.toStringFull());
 					System.out.println("Desired Output:");

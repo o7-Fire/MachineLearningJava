@@ -2,7 +2,7 @@ a neural network that imitate a computational thing\
 score: lower better accuracy: higher better
 ![](https://cdn.discordapp.com/attachments/809580979777568828/811182724114284594/unknown.png)
 ![](https://cdn.discordapp.com/attachments/713346278003572777/811093717008121926/unknown.png)
-![](https://cdn.discordapp.com/attachments/713346278003572777/811093350618890320/unknown.png)
+![](https://cdn.discordapp.com/attachments/801061985034305556/811188188676096000/unknown.png)
 
 ```mermaid
 >eval
