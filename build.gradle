@@ -20,21 +20,17 @@ dependencies {
     compile group: 'org.deeplearning4j', name: 'rl4j-core', version: '1.0.0-beta7'
     compile group: 'org.deeplearning4j', name: 'rl4j-api', version: '1.0.0-beta7'
     compile group: 'org.nd4j', name: 'nd4j-native-platform', version: '1.0.0-beta7'
+    implementation group: 'io.jenetics', name: 'jenetics.ext', version: '6.2.0'
+    implementation group: 'io.jenetics', name: 'jenetics.prog', version: '6.2.0'
 
     implementation group: 'org.deeplearning4j', name: 'deeplearning4j-ui', version: '1.0.0-beta7'
+    implementation group: 'io.jenetics', name: 'jpx', version: '2.2.0'
 
-
+    implementation group: 'io.jenetics', name: 'jenetics', version: '6.2.0'
 
     implementation "com.github.o7-Fire.Atomic-Library:Atomic:049cee0055"
 }
-jar{
-    manifest {
-        attributes 'Main-Class': 'EntryPoint'
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-}
+
 test {
     useJUnitPlatform()
 }
